@@ -82,7 +82,9 @@
                         <a><table><tr><td><div id="custom-search-input" style="width:200px;">
                             <div class="col-md-3 input-group" style="width:100%;margin-top:-6px;">
                                 <form action="" method="post" id="searchForm">
-                                    <input type="text" class="search-query form-control" id="productSearch" name="prdouctSearch" placeholder="Search for a product" />
+				  {{ form.hidden_tag() }}
+				  {{ form.searchBox(size=25, placeholder="Search for a product", class_="search-query form-control") }}
+                                    <!--input type="text" class="search-query form-control" id="productSearch" name="prdouctSearch" placeholder="Search for a product" />-->
                                 </form>
                             </div>
                         </div>

@@ -66,5 +66,6 @@ class AddStoreForm(Form):
 	inventoryURL = StringField('inventory URL', validators=[InputRequired(), URL()])
 
 	
-	
+class SearchForm(Form):
+	searchBox = StringField('search')
 	
