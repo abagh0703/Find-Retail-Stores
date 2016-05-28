@@ -50,15 +50,15 @@
             color:gray;
         }
         input {
-            color: rgb(117,​117,​117);
+            color: gray !important;
         }
     </style>
     <script>
         // The Browser API key obtained from the Google Developers Console.
-        var developerKey = 'AIzaSyBUvNFztQpqs6OLiwKfGRXhCtp-xEVasOs';
+        var developerKey = 'AIzaSyD1tP3TVYgejPgqe8vw-JmuFkgOyl5b5gc';
 
         // The Client ID obtained from the Google Developers Console. Replace with your own Client ID.
-        var clientId = "347332191906-c9u2h6v6l6743ega7ofkbro73uglt06r.apps.googleusercontent.com";
+        var clientId = "347332191906-dbi65cndmem0ekmn7qgcoh81rtgvu04b.apps.googleusercontent.com";
 
         // Scope to use to access user's photos.
         var scope = ['https://www.googleapis.com/auth/drive.readonly'];
@@ -226,14 +226,16 @@
             <h6>About your inventory</h6>
             <div class="mdl-card__supporting-text">
                 Please select your Google Spreadsheet containing a list of all the products you sell in your store. The products do
-                not have to currently be in stock, but must be items that are repeatedly restocked.
+                not have to currently be in stock, but must be items that are repeatedly restocked. Including the price is optional.
                 <br>Below is an example of what this spreadsheet could look like.
                 <!--Image-->
                 <img src="../static/img/inventoryExample.png" alt="An example of an inventory file" style="margin-top:5px;">
                 <br>In addition to selecting your file, please be sure to share the file with abagh0703@gmail.com
                 (the level of access does not matter)
+                <br><button type="button" id="chooseSpreadsheet" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
+                    <i class="material-icons">add</i>
+                </button>
                 <div id="result"></div>
-                <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
             </div>
 
             <!--end of fields-->
@@ -271,9 +273,17 @@
 <!-- Custom Theme JavaScript -->
 <script src="{{ url_for('static', filename='js/grayscale.js') }}"></script>
 
-<script>
+<script type="text/javascript">
+    console.log('hello');
     $('#addStoreFormSubmit').click(function(){
         $('#addStoreForm').submit();
+    });
+    $('#chooseSpreadsheet').click(function(){
+            var s = document.createElement("script");
+            s.type = "text/javascript";
+            s.src = "https://apis.google.com/js/api.js?onload=onApiLoad";
+            // Use any selector
+            $("head").append(s);
     })
 </script>
 
