@@ -68,20 +68,26 @@
                     <a class="page-scroll" href="#contact">Contact</a>
                 </li>
                 <li>
-                    <a><div id="custom-search-input" style="width:200px;">
+                    <a><table><tr><td><div id="custom-search-input" style="width:200px;">
                         <div class="col-md-3 input-group" style="width:100%;margin-top:-6px;">
-                           <form action="" method="post" id="searchForm">
-                                  {{ form.hidden_tag() }}
-                                  {{ form.searchBox(size=25, placeholder="Search for a product", class_="search-query form-control") }}
-                                    <!--input type="text" class="search-query form-control" id="productSearch" name="prdouctSearch" placeholder="Search for a product" />-->
-                           </form>
-                           <span class="input-group-btn">
-                             <button class="btn btn-danger" form="searchForm" type="submit" style="margin-top:-5px;">
-                               <span class=" glyphicon glyphicon-search"></span>
-                             </button>
-                           </span>
+                            <form action="" method="post" id="searchForm">
+                                {{ form.hidden_tag() }}
+                                {{ form.searchBox(size=25, placeholder="Search for a product", class_="search-query form-control") }}
+                                <!--input type="text" class="search-query form-control" id="productSearch" name="prdouctSearch" placeholder="Search for a product" />-->
+                            </form>
                         </div>
-                    </div></a>
+                    </div>
+                    </td>
+                        <td>
+                            <span class="input-group-btn" style="width: 50px;">
+                            <button class="btn btn-danger" form="searchForm" type="submit" style="margin-top:-5px;">
+                                <span class=" glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                        </td>
+                    </tr>
+                    </table>
+                    </a>
                 </li>
             </ul>
         </div>
