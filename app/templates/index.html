@@ -27,7 +27,19 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+    <style>
+        .demo-card-wide.mdl-card {
+            width: 512px;
+        }
+        .demo-card-wide > .mdl-card__title {
+            color: #fff;
+            height: 176px;
+            background: url('../assets/demos/welcome_card.jpg') center / cover;
+        }
+        .demo-card-wide > .mdl-card__menu {
+            color: #fff;
+        }
+    </style>
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
@@ -70,7 +82,7 @@
                         <a><table><tr><td><div id="custom-search-input" style="width:200px;">
                             <div class="col-md-3 input-group" style="width:100%;margin-top:-6px;">
                                 <form action="" method="post" id="searchForm">
-                                    <input type="text" class="search-query form-control" id="productSearch" placeholder="Search" />
+                                    <input type="text" class="search-query form-control" id="productSearch" name="prdouctSearch" placeholder="Search for a product" />
                                 </form>
                             </div>
                         </div>
