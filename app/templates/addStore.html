@@ -50,9 +50,77 @@
             color:gray;
         }
         input {
-            color:
+            color: rgb(117,​117,​117);
         }
     </style>
+    <script>
+        // The Browser API key obtained from the Google Developers Console.
+        var developerKey = 'AIzaSyBUvNFztQpqs6OLiwKfGRXhCtp-xEVasOs';
+
+        // The Client ID obtained from the Google Developers Console. Replace with your own Client ID.
+        var clientId = "347332191906-c9u2h6v6l6743ega7ofkbro73uglt06r.apps.googleusercontent.com";
+
+        // Scope to use to access user's photos.
+        var scope = ['https://www.googleapis.com/auth/drive.readonly'];
+
+        var pickerApiLoaded = false;
+        var oauthToken;
+
+        // Use the API Loader script to load google.picker and gapi.auth.
+        function onApiLoad() {
+            gapi.load('auth', {'callback': onAuthApiLoad});
+            gapi.load('picker', {'callback': onPickerApiLoad});
+        }
+
+        function onAuthApiLoad() {
+            window.gapi.auth.authorize(
+                    {
+                        'client_id': clientId,
+                        'scope': scope,
+                        'immediate': false
+                    },
+                    handleAuthResult);
+        }
+
+        function onPickerApiLoad() {
+            pickerApiLoaded = true;
+            createPicker();
+        }
+
+        function handleAuthResult(authResult) {
+            if (authResult && !authResult.error) {
+                oauthToken = authResult.access_token;
+                createPicker();
+            }
+        }
+
+        // Create and render a Picker object for picking user Photos.
+        function createPicker() {
+            console.log(pickerApiLoaded);
+            console.log('dsaf');
+            console.log(oauthToken);
+            if (pickerApiLoaded && oauthToken) {
+                var picker = new google.picker.PickerBuilder().
+                addView(google.picker.ViewId.SPREADSHEETS).
+                setOAuthToken(oauthToken).
+                setDeveloperKey(developerKey).
+                setCallback(pickerCallback).
+                build();
+                picker.setVisible(true);
+            }
+        }
+
+        // A simple callback implementation.
+        function pickerCallback(data) {
+            var url = 'nothing';
+            if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
+                var doc = data[google.picker.Response.DOCUMENTS][0];
+                url = doc[google.picker.Document.URL];
+            }
+            var message = 'You picked: ' + url;
+            document.getElementById('result').innerHTML = message;
+        }
+    </script>
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
@@ -121,7 +189,8 @@
         <div class="mdl-card__supporting-text">
             Once you fill out this form, we will begin to add your inventory to our database.
         </div>
-        <form style="margin-left:20px;" action="" method="post" id="searchForm">
+        <form style="margin-left:20px;" action="" method="post" id="addStoreForm">
+            <!-- About the person signing up -->
             <h6 style="margin-top:10px;margin-bottom:-5px;">About you</h6>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                 <input class="mdl-textfield__input" type="text" id="personName" name="personName">
@@ -132,7 +201,9 @@
                 <label class="mdl-textfield__label" for="personemail">Your email</label>
             </div>
 
+            <!-- About retail store -->
             <h6 style="margin-top:10px;margin-bottom:-5px;">About your retail store</h6>
+            <fieldset>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                 <input class="mdl-textfield__input" type="text" id="storeName" name="storeName">
                 <label class="mdl-textfield__label" for="storeName">Store Name</label>
@@ -150,19 +221,28 @@
                 <label class="mdl-textfield__label" for="zip">Zip code</label>
                 <span class="mdl-textfield__error">Input is not a number!</span>
             </div>
+            </fieldset>
+            <!-- About their inventory -->
+            <h6>About your inventory</h6>
+            <div class="mdl-card__supporting-text">
+                Please select your Google Spreadsheet containing a list of all the products you sell in your store. The products do
+                not have to currently be in stock, but must be items that are repeatedly restocked.
+                <br>Below is an example of what this spreadsheet could look like.
+                <!--Image-->
+                <img src="../static/img/inventoryExample.png" alt="An example of an inventory file" style="margin-top:5px;">
+                <br>In addition to selecting your file, please be sure to share the file with abagh0703@gmail.com
+                (the level of access does not matter)
+                <div id="result"></div>
+                <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
+            </div>
 
             <!--end of fields-->
             <div class="mdl-card__actions mdl-card--border">
-                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                    Get Started
-                </a>
+                <button id="addStoreFormSubmit" form="addStoreForm" type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    Submit
+                </button>
             </div>
         </form>
-        <div class="mdl-card__menu">
-            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-                <i class="material-icons">share</i>
-            </button>
-        </div>
     </div>
 <!-- /card -->
 
@@ -190,6 +270,12 @@
 
 <!-- Custom Theme JavaScript -->
 <script src="{{ url_for('static', filename='js/grayscale.js') }}"></script>
+
+<script>
+    $('#addStoreFormSubmit').click(function(){
+        $('#addStoreForm').submit();
+    })
+</script>
 
 </body>
 
