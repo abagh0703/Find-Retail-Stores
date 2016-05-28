@@ -1,0 +1,10 @@
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
+#scope = ["https://docs.google.com/spreadsheets/d/1JWraVP6NG4MKuuLXVS8eoID-z65q5uFHvvdH1Zn5gzM/edit?usp=sharing"]
+scope = ["https://spreadsheets.google.com/feeds"]
+credentials = ServiceAccountCredentials.from_json_keyfile_name("RetialTrail-8d1b90f2416e.json", scope)
+gc = gspread.authorize(credentials)
+wks = gc.open_by_url("https://docs.google.com/spreadsheets/d/1JWraVP6NG4MKuuLXVS8eoID-z65q5uFHvvdH1Zn5gzM/edit?usp=sharing").sheet1
+print wks.acell("A1")
+
