@@ -70,16 +70,12 @@
                 <li>
                     <a><div id="custom-search-input" style="width:200px;">
                         <div class="col-md-3 input-group" style="width:100%;margin-top:-6px;">
-                           <form action="" method="post" id="searchForm">
-                                  {{ form.hidden_tag() }}
-                                  {{ form.searchBox(size=25, placeholder="Search for a product", class_="search-query form-control") }}
-                                    <!--input type="text" class="search-query form-control" id="productSearch" name="prdouctSearch" placeholder="Search for a product" />-->
-                           </form>
-                           <span class="input-group-btn">
-                             <button class="btn btn-danger" form="searchForm" type="submit" style="margin-top:-5px;">
-                               <span class=" glyphicon glyphicon-search"></span>
-                             </button>
-                           </span>
+                            <input type="text" class="search-query form-control" placeholder="Search" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-danger" type="button">
+                                        <span class=" glyphicon glyphicon-search"></span>
+                                    </button>
+                                </span>
                         </div>
                     </div></a>
                 </li>

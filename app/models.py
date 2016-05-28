@@ -1,9 +1,20 @@
 from app import db
 
-class URL(db.model):
+class Store(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	url = db.Column(db.String(120), index = True, unique = True)
+	url = db.Column(db.String(120))
+	address = db.Column(db.String(120))
+	name = db.Column(db.String(64))
+	items = db.relationship('Item', backref='owner', lazy = 'dynamic')
+	
 	def __repr__(self):
-        return '<URL %r>' % (self.url)
+		return '<STORE NAME: %r>' % (self.name)
         
-#class Inventory(
+class Item(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	name = db.Column(db.String(64))
+	price = db.Column(db.Integer)
+	storeID = db.Column(db.Integer, db.ForeignKey('store.id'))
+	
+	def __repr__(self):
+		return '<NAME: %r>' % (self.name)

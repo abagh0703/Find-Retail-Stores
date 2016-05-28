@@ -27,7 +27,14 @@ def addStore():
 		return redirect("/index")
 	return render_template('addStore.html')
 	
-@app.route('/results')
-@app.route('/results.html')
+@app.route('/results', methods=['GET', 'POST'])
+@app.route('/results.html', methods=['GET', 'POST'])
 def results():
-	return render_template('results.html')
+	form = SearchForm()
+	if form.validate_on_submit():
+		#do search stuff here
+		flash("SEARCHING!!")
+		print "YOLO"
+		return redirect('/results')
+	return render_template('results.html',
+							form = form)
