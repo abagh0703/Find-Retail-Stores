@@ -362,6 +362,10 @@
     });
     </script>
 </section>
+<!--Slider for max distance-->
+<div>
+{{ formSlider.distanceSlider(class_="mdl-slider mdl-js-slider",min="0", max="100", value="25", tabindex="0") }}
+</div>
 <!--Post each individual result-->
 {% if mapLocs|length == 0 %}
 		<div class="demo-card-wide mdl-card mdl-shadow--2dp storeResult" style="min-height:100px;">

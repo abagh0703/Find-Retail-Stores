@@ -1,6 +1,6 @@
 from app import app, db, gc, lex, ALLOWED_EXTENSIONS
 from flask import render_template, flash, redirect, request, url_for, session
-from .forms import AddStoreForm, SearchForm
+from .forms import AddStoreForm, SearchForm, MaxDistanceForm
 from .models import Store, Item
 import gspread
 #import gmInterface
@@ -125,16 +125,17 @@ def results(keyword):
 	for item in allItems:
 		itna = item.name.lower()
 		if matches(itna, keyword):
-			results.append([item.owner.name, item.owner.address, item.price])
+			results.append([item.owner.name, item.owner.address, item.price, item.name])
 	print results
 	#if len(results) != 0:
 	#	print results	
 		#gmInterface.load_map(results)
 	
+	formSlider = MaxDistanceForm()
 	
 	form = SearchForm()
 	if form.validate_on_submit():
-		
+		f
 		#flash("SEARCHING!!")
 		#print "YOLO"
 		searchText = form.searchBox.data
@@ -142,7 +143,8 @@ def results(keyword):
 	return render_template('results.html',
 							form = form,
 							mapLocs = results,
-							search = keyword.upper()
+							search = keyword.upper(),
+							formSlider = formSlider
 							)
 
 @app.route('/urlsent', methods=['GET','POST'])

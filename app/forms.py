@@ -1,6 +1,7 @@
 from flask.ext.wtf import Form
 from wtforms import StringField, SelectField, IntegerField, HiddenField, BooleanField, FileField
 from wtforms.validators import InputRequired, URL, Email, Required
+from wtforms.fields.html5 import DecimalRangeField
 
 stateList = [("AK", "Alaska"), 
                 ("AL", "Alabama"), 
@@ -74,4 +75,7 @@ class AddStoreForm(Form):
 	
 class SearchForm(Form):
 	searchBox = StringField('search')
+	
+class MaxDistanceForm(Form):
+	distanceSlider = DecimalRangeField('Distance', default=0)
 	
