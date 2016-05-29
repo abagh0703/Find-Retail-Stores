@@ -187,7 +187,7 @@
                     var count = 0;
                     {%
                         for loc in mapLocs %}
-                    console.log("hello");
+                    console.log("hello", "{{ loc[2] }}");
                     codeAddress([["{{ loc[0] }}", "{{ loc[1] }}"], count]);
                     count += 1;
                     {%

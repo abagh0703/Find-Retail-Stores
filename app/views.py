@@ -92,7 +92,7 @@ def results(keyword):
 	for item in allItems:
 		itna = item.name.lower()
 		if itna.find(keyword) != -1 or keyword.find(itna) != -1:
-			results.append([item.owner.name, item.owner.address])
+			results.append([item.owner.name, item.owner.address, item.price])
 	print results
 	#if len(results) != 0:
 	#	print results	
