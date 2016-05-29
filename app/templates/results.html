@@ -65,13 +65,23 @@
             color: #2f3aff;
             margin-left:10px;
             margin-top:2px;
+            font-weight: 600;
         }
         .storeAddress {
-            margin-left:-6px;
+            margin-left:8px;
+            padding-left: 0px;
+            padding-top: 5px;
+        }
+        .storePrice{
+            padding-top: 0px;
+            font-size: 11px;
+            color: green;
+            margin-left: 10px;
         }
         .distance {
             padding-left: 11px;
-            padding-bottom: 0px;
+            padding-bottom: 0;
+            padding-top: 10px;
         }
         .searchTitle {
         	color: #fff;
@@ -231,7 +241,7 @@
                                 marker.addListener('click', function() {
                                     infowindow.open(map, marker);
                                     $('.storeResult').eq(index).effect( "highlight", {color:"#669966"}, 1500 );
-                                });
+                                }); //TODO: Change deodorant, spacing, fixed map
                                 $('.storeResult').eq(index).click(function(){
                                     toggleBounce();
                                 });
