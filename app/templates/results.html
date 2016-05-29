@@ -162,11 +162,16 @@
                     initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                     map.setCenter(initialLocation);
                     console.log(initialLocation);
+                    var infowindow = new google.maps.InfoWindow({
+                        content: 'You are here'
+                    });
                     var marker = new google.maps.Marker({
                         position: initialLocation,
-                        title: "You are here",
+                        title: "Your location",
                         map: map
                     });
+                        infowindow.open(map, marker);
+
 
                     // To add the marker to the map, call setMap();
 //                marker.setMap(map);
@@ -202,9 +207,22 @@
                                 var marker = new google.maps.Marker({
                                     map: map,
                                     position: results[0].geometry.location,
+                                    animation: google.maps.Animation.DROP,
                                     title: storeInfo[0][0],
                                     icon: '../static/img/blueMarker.png'
+                                }); //TODO: press and box highlights, infowindow opens, different colorm markers and corresponding color text, apps, instant "you are her" infowindow
+                                $('.storeResult').eq(index).click(function(){
+                                    toggleBounce();
                                 });
+                                function toggleBounce() {
+                                    if (marker.getAnimation() !== null) {
+                                        marker.setAnimation(null);
+                                    } else {
+                                        marker.setAnimation(google.maps.Animation.BOUNCE);
+                                        setTimeout(function(){ marker.setAnimation(null); }, 1480);
+                                    }
+                                }
+
                                 var service = new google.maps.DistanceMatrixService();
                                 service.getDistanceMatrix(
                                         {
