@@ -1,7 +1,12 @@
-from app import app
-from flask import render_template, flash, redirect
+from app import app, db
+from flask import render_template, flash, redirect, request, url_for, session
 from .forms import AddStoreForm, SearchForm
-
+from .models import Store, Item
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+import gmInterface
+import json
+from config import basedir
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -11,8 +16,9 @@ def index():
 	if form.validate_on_submit():
 		#do search stuff here
 		flash("SEARCHING!!")
-		print "YOLO"
-		return redirect('/results')
+		#print "YOLO"
+		searchText = form.searchBox.data
+		return redirect('/results/%s'%searchText)
 	else:
 		print "Not valid"
 	return render_template('index.html',
@@ -24,17 +30,80 @@ def addStore():
 	form = AddStoreForm()
 	if form.validate_on_submit():
 		flash("Thank you, your data has been submitted")
+		print "Thank you, your data has been submitted"
+		
+		session["store name"] =  form.name.data
+		
+		
+		
+		#create new database entry
+		store = Store.query.filter_by(name=session["store name"]).first() 
+		if store == None:
+			store = Store(bossName=form.bossName.data,
+							bossEmail=form.bossEmail.data,
+							url=session['sheetURL'],
+							address="%s, %s, %s %s" %(form.streetAddress.data, form.city.data, form.state.data, form.zipCode.data),
+							name=session["store name"]
+							)
+			scope = ["https://spreadsheets.google.com/feeds"]
+			credentials = None
+
+			credentials = ServiceAccountCredentials.from_json_keyfile_name(basedir+"/RetailTrail-168c25034f99.json", scope)
+			gc = gspread.authorize(credentials)
+
+
+			wks = gc.open_by_url(session["sheetURL"]).sheet1
+			items = wks.col_values(1)
+			prices = wks.col_values(2)
+			result = []
+			for i, j in zip(items, prices):
+				
+				if i.strip() and j.strip():
+					print i, "|", j
+					result.append(Item(name=i.strip(), price=float(j.strip()), owner=store))
+			for item in result:
+				db.session.add(item)
+
+
+			db.session.add(store)
+		
+			db.session.commit()
+		#print session['sheetURL'] --- work around because hiddenfield wasn't working
 		return redirect("/index")
-	return render_template('addStore.html')
+	else:
+		flash("Error!")
+		print "This didn't work"
+	return render_template('addStore.html',
+							form = form)
 	
-@app.route('/results', methods=['GET', 'POST'])
-@app.route('/results.html', methods=['GET', 'POST'])
-def results():
+@app.route('/results/<keyword>', methods=['GET', 'POST'])
+@app.route('/results.html/<keyword>', methods=['GET', 'POST'])
+def results(keyword):
+
+	#do search stuff here
+	allItems = Item.query.all()
+	results = []
+	for item in allItems:
+		if item.name.find(keyword) != -1 or keyword.find(item.name) != -1:
+			results.append((item.owner.name, item.owner.address))
+	if len(results) != 0:
+		print results	
+		gmInterface.load_map(results)
+	
 	form = SearchForm()
 	if form.validate_on_submit():
-		#do search stuff here
+		
 		flash("SEARCHING!!")
-		print "YOLO"
-		return redirect('/results')
+		#print "YOLO"
+		searchText = form.searchBox.data
+		return redirect('/results/%s' %searchText)
 	return render_template('results.html',
-							form = form)
+							form = form,
+							mapLocs = results)
+
+@app.route('/urlsent', methods=['GET','POST'])
+def urlsent():
+	#print request.get_json()
+	session['sheetURL'] = request.get_json()['sheetURL']
+	#print session['sheetURL']
+	return redirect(url_for("addStore"))
