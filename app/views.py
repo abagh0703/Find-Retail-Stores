@@ -80,10 +80,10 @@ def addStore():
 		
 			db.session.commit()
 		#print session['sheetURL'] --- work around because hiddenfield wasn't working
-		return redirect("/index")
-	else:
+		return redirect(url_for("thankyou"))
+	#else:
 		#flash("Error!")
-		print "This didn't work"
+		#print "This didn't work"
 	return render_template('addStore.html',
 							form = form,
 							errorMessage = "")
@@ -108,7 +108,7 @@ def results(keyword):
 	form = SearchForm()
 	if form.validate_on_submit():
 		
-		flash("SEARCHING!!")
+		#flash("SEARCHING!!")
 		#print "YOLO"
 		searchText = form.searchBox.data
 		return redirect('/results/%s' %searchText)
@@ -124,6 +124,19 @@ def urlsent():
 	session['sheetURL'] = request.get_json()['sheetURL']
 	#print session['sheetURL']
 	return redirect(url_for("addStore"))
+
+@app.route('/thankyou', methods=['GET', 'POST'])
+def thankyou():
+	form = SearchForm()
+	if form.validate_on_submit():
+		#flash("SEARCHING!!")
+		#print "YOLO"
+		searchText = form.searchBox.data
+		return redirect('/results/%s' %searchText)
+	return render_template('thankyou.html',
+					form = form
+					)
+	
 	
 def update_all_sheets():
 	stores = Store.query.all()
