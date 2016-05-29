@@ -94,6 +94,9 @@ def addStore():
 				
 				if i.strip() and j.strip():
 					print i, "|", j
+					if j.strip() == "":
+						j = "-1"
+						#set the default price at -1 for javascript processing
 					result.append(Item(name=i.strip(), price=float(j.strip()), owner=store))
 			for item in result:
 				db.session.add(item)
