@@ -117,14 +117,40 @@
                 var doc = data[google.picker.Response.DOCUMENTS][0];
                 url = doc[google.picker.Document.URL];
             }
-            var message = 'You picked: ' + url;
-            document.getElementById('result').innerHTML = message;
+          	var message = 'You picked: ' + url;
+	  		//$(document).ready(function(){
+	    	//$("#result").text(message);
+            //document.getElementByClassName('result').innerHTML = message;
+	    	$('.result').text(message);
+	    	//$('#resultTest').val(url);
+	    	//$('#resultText').text(url);
+	    	$.ajax({
+				url: '/urlsent',
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					sheetURL: url
+				}),
+				dataType: 'json',
+				success: function(doc) {
+					console.log("It worked");
+				}
+	    	})
+	    
         }
     </script>
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
-
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <li>{{ message }} </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
 <!-- Navigation -->
 <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
     <div class="container">
@@ -145,10 +171,10 @@
                     <a href="#page-top"></a>
                 </li>
                 <li>
-                    <a href="index.html">Home</a>
+                    <a href="/index.html">Home</a>
                 </li>
                 <li>
-                    <a href="addStore.html">Add a store</a>
+                    <a href="/addStore.html">Add a store</a>
                 </li>
                 <li>
                     <a class="page-scroll" href="#about">About</a>
@@ -190,14 +216,25 @@
             Once you fill out this form, we will begin to add your inventory to our database.
         </div>
         <form style="margin-left:20px;" action="" method="post" id="addStoreForm">
-            <!-- About the person signing up -->
+	  {{ form.hidden_tag() }}            
+	  <!-- About the person signing up -->
             <h6 style="margin-top:10px;margin-bottom:-5px;">About you</h6>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="personName" name="personName">
+              {{ form.bossName(class_="mdl-textfield__input", id="personName") }}
+	      <br/>
+	      {% for error in form.bossName.errors %}
+              <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}<br>
+	      <!--input class="mdl-textfield__input" type="text" id="personName" name="personName">-->
                 <label class="mdl-textfield__label" for="personName">First and Last Name</label>
             </div>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="personEmail" name="personEmail">
+	      {{ form.bossEmail(class_="mdl-textfield__input", id="personEmail")}}
+	      <br/>
+              {% for error in form.bossEmail.errors %}
+              <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}<br>
+                <!--input class="mdl-textfield__input" type="text" id="personEmail" name="personEmail"-->
                 <label class="mdl-textfield__label" for="personemail">Your email</label>
             </div>
 
@@ -205,21 +242,51 @@
             <h6 style="margin-top:10px;margin-bottom:-5px;">About your retail store</h6>
             <fieldset>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="storeName" name="storeName">
+	      {{ form.name(class_="mdl-textfield__input", id="storeName") }}
+	      <br/>
+              {% for error in form.name.errors %}
+              <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}<br>
+                <!--input class="mdl-textfield__input" type="text" id="storeName" name="storeName"-->
                 <label class="mdl-textfield__label" for="storeName">Store Name</label>
             </div>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="streetAddress" name="streetAddress">
+	      {{ form.streetAddress(class_="mdl-textfield__input", id="streetAddress") }}
+	      <br/>
+              {% for error in form.streetAddress.errors %}
+              <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}<br>
+                <!--input class="mdl-textfield__input" type="text" id="streetAddress" name="streetAddress"-->
                 <label class="mdl-textfield__label" for="streetAddress">Street Address</label>
             </div>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="city" name="city">
+	      {{ form.city(class="mdl-textfield__input", id="city") }}
+	       <br/>
+              {% for error in form.city.errors %}
+              <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}<br>
+                <!--input class="mdl-textfield__input" type="text" id="city" name="city"-->
                 <label class="mdl-textfield__label" for="city">Town/City name</label>
             </div>
+	    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+	      {{ form.state(id="state") }}
+	       <br/>
+              {% for error in form.state.errors %}
+              <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}<br>
+              <!--input class="mdl-textfield__input" type="text" id="zip" name="zip" pattern="-?[0-9]*(\.[0-9]+)?"-->
+              <!--label class="mdl-textfield__label" for="state">State</label-->
+              <!--span class="mdl-textfield__error">Input is not a number!</span-->
+            </div>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" type="text" id="zip" name="zip" pattern="-?[0-9]*(\.[0-9]+)?">
+	      {{ form.zipCode(class_="mdl-textfield__input", id="zip") }}
+	       <br/>
+              {% for error in form.zipCode.errors %}
+              <span style="color: red;">[{{ error }}]</span>
+              {% endfor %}<br>
+                <!--input class="mdl-textfield__input" type="text" id="zip" name="zip" pattern="-?[0-9]*(\.[0-9]+)?"-->
                 <label class="mdl-textfield__label" for="zip">Zip code</label>
-                <span class="mdl-textfield__error">Input is not a number!</span>
+                <!--span class="mdl-textfield__error">Input is not a number!</span-->
             </div>
             </fieldset>
             <!-- About their inventory -->
@@ -235,7 +302,10 @@
                 <br><button type="button" id="chooseSpreadsheet" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
                     <i class="material-icons">add</i>
                 </button>
-                <div id="result"></div>
+				<span color=red>{{ errorMessage }}</>
+                <div class="result"></div>
+	
+		<!--p id="resultTest"></p-->
             </div>
 
             <!--end of fields-->
