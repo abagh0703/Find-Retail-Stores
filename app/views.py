@@ -4,7 +4,7 @@ from .forms import AddStoreForm, SearchForm
 from .models import Store, Item
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-import gmInterface
+#import gmInterface
 import json
 from config import basedir
 
@@ -85,10 +85,11 @@ def results(keyword):
 	results = []
 	for item in allItems:
 		if item.name.find(keyword) != -1 or keyword.find(item.name) != -1:
-			results.append((item.owner.name, item.owner.address))
+			results.append([item.owner.name, item.owner.address])
 	if len(results) != 0:
 		print results	
-		gmInterface.load_map(results)
+		#gmInterface.load_map(results)
+	
 	
 	form = SearchForm()
 	if form.validate_on_submit():
