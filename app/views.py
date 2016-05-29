@@ -29,12 +29,15 @@ def index():
 def addStore():
 	form = AddStoreForm()
 	if form.validate_on_submit():
-		flash("Thank you, your data has been submitted")
+		#flash("Thank you, your data has been submitted")
 		print "Thank you, your data has been submitted"
 		
 		session["store name"] =  form.name.data
 		
 		
+		
+			#There are headings on the spreadsheets
+			
 		
 		#create new database entry
 		store = Store.query.filter_by(name=session["store name"]).first() 
@@ -46,11 +49,18 @@ def addStore():
 							name=session["store name"]
 							)
 			
-
-			update_all_sheets(gc)
+			#check all other sheets to see if there are any changes
+			#if there are they are updated
+			update_all_sheets()
 			wks = gc.open_by_url(session["sheetURL"]).sheet1
+			
 			items = wks.col_values(1)
 			prices = wks.col_values(2)
+			
+			if form.isHeading.data:
+				items = [1:]
+				prices = [1:]
+				
 			if len(items) != len(prices):
 				return render_template('addStore.html',
 							form = form,
@@ -115,7 +125,7 @@ def urlsent():
 	#print session['sheetURL']
 	return redirect(url_for("addStore"))
 	
-def update_all_sheets(gc):
+def update_all_sheets():
 	stores = Store.query.all()
 	for store in stores:
 		wks = gc.open_by_url(store.url).sheet1

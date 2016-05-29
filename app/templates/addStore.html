@@ -307,12 +307,15 @@
 	
 		<!--p id="resultTest"></p-->
             </div>
-
+			{{ form.isHeading(id = "isHeading", class_="mdl-checkbox__input") }}
+                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="isHeading" style="color:gray">
+                	Does the sheet use column headings?</label>
             <!--end of fields-->
             <div class="mdl-card__actions mdl-card--border">
                 <button id="addStoreFormSubmit" form="addStoreForm" type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
                     Submit
                 </button>
+                
             </div>
         </form>
     </div>

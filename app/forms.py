@@ -1,5 +1,5 @@
 from flask.ext.wtf import Form
-from wtforms import StringField, SelectField, IntegerField, HiddenField
+from wtforms import StringField, SelectField, IntegerField, HiddenField, BooleanField
 from wtforms.validators import InputRequired, URL, Email, Required
 
 stateList = [("AK", "Alaska"), 
@@ -66,6 +66,7 @@ class AddStoreForm(Form):
 	city = StringField('city', validators=[InputRequired()])
 	state = SelectField('state', choices=stateList)
 	zipCode = IntegerField('zip code', validators=[InputRequired()]) 
+	isHeading = BooleanField('sheet heading')
 	#processed using ajax: inventoryURL = HiddenField('inventory URL')
 
 	
