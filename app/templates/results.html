@@ -87,10 +87,10 @@
                     <a href="#page-top"></a>
                 </li>
                 <li>
-                    <a href="index.html">Home</a>
+                    <a href="/index.html">Home</a>
                 </li>
                 <li>
-                    <a href="addStore.html">Add a store</a>
+                    <a href="/addStore.html">Add a store</a>
                 </li>
                 <li>
                     <a class="page-scroll" href="#about">About</a>
@@ -138,7 +138,7 @@
     <script>
         var map;
         var geocoder;
-        function initMap(){
+        window.initMap = function(){
             geocoder = new google.maps.Geocoder();
             map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: -34.397, lng: 150.644},
@@ -165,18 +165,23 @@
 //                icon: "../static/img/blueMarker.png"
 //            });
 //            storeMarker.setMap(map);
-                    var streetStores = [    //for stores that are not geocoded.
-                        ['CVS', '19 Middle Neck Road, Great Neck, NY 11021'], //TODO: try zipcode
-                        ['Walmart', '99 Madis Avenue, New York, NY 10016']];
+                    //var streetStores = {{ mapLocs }};
+                        //for stores that are not geocoded.
+                       // [['CVS', '19 Middle Neck Road, Great Neck, NY 11021'], //TODO: try zipcode
+                        //['Walmart', '99 Madis Avenue, New York, NY 10016']];
 
                     //geocode the uncoded stores.
-                    for (var i = 0; i < streetStores.length; i++){
-                        codeAddress(streetStores[i]);
-                    }
+                    //for (var i = 0; i < streetStores.length; i++){
+                    {% for loc in mapLocs %}
+                        console.log("hello");
+                        codeAddress(["{{ loc[0] }}", "{{ loc[1] }}" ]);
+                    {% endfor %}
+                    //}
                     function codeAddress(storeInfo) {
                         var address=storeInfo[1];
                         geocoder.geocode( { 'address': address}, function(results, status) {
                             if (status == google.maps.GeocoderStatus.OK) {
+                                console.log(storeInfo)
                                 var marker = new google.maps.Marker({
                                     map: map,
                                     position: results[0].geometry.location,

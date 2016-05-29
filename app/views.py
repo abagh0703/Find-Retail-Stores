@@ -55,6 +55,11 @@ def addStore():
 			wks = gc.open_by_url(session["sheetURL"]).sheet1
 			items = wks.col_values(1)
 			prices = wks.col_values(2)
+			if len(items) != len(prices):
+				return render_template('addStore.html',
+							form = form,
+							errorMessage = "Make sure the item and price columns are the same length".toUpper())
+			
 			result = []
 			for i, j in zip(items, prices):
 				
@@ -71,23 +76,26 @@ def addStore():
 		#print session['sheetURL'] --- work around because hiddenfield wasn't working
 		return redirect("/index")
 	else:
-		flash("Error!")
+		#flash("Error!")
 		print "This didn't work"
 	return render_template('addStore.html',
-							form = form)
+							form = form,
+							errorMessage = "")
 	
 @app.route('/results/<keyword>', methods=['GET', 'POST'])
 @app.route('/results.html/<keyword>', methods=['GET', 'POST'])
 def results(keyword):
-
+	keyword = keyword.lower()
 	#do search stuff here
 	allItems = Item.query.all()
 	results = []
 	for item in allItems:
-		if item.name.find(keyword) != -1 or keyword.find(item.name) != -1:
+		itna = item.name.lower()
+		if itna.find(keyword) != -1 or keyword.find(itna) != -1:
 			results.append([item.owner.name, item.owner.address])
-	if len(results) != 0:
-		print results	
+	print results
+	#if len(results) != 0:
+	#	print results	
 		#gmInterface.load_map(results)
 	
 	
