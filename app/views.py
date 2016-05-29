@@ -58,8 +58,8 @@ def addStore():
 			prices = wks.col_values(2)
 			
 			if form.isHeading.data:
-				items = [1:]
-				prices = [1:]
+				items = items[1:]
+				prices = prices[1:]
 				
 			if len(items) != len(prices):
 				return render_template('addStore.html',
