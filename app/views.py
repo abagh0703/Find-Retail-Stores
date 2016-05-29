@@ -1,12 +1,12 @@
-from app import app, db
+from app import app, db, gc
 from flask import render_template, flash, redirect, request, url_for, session
 from .forms import AddStoreForm, SearchForm
 from .models import Store, Item
 import gspread
-from oauth2client.service_account import ServiceAccountCredentials
+
 #import gmInterface
 import json
-from config import basedir
+import config
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -45,13 +45,9 @@ def addStore():
 							address="%s, %s, %s %s" %(form.streetAddress.data, form.city.data, form.state.data, form.zipCode.data),
 							name=session["store name"]
 							)
-			scope = ["https://spreadsheets.google.com/feeds"]
-			credentials = None
+			
 
-			credentials = ServiceAccountCredentials.from_json_keyfile_name(basedir+"/RetailTrail-168c25034f99.json", scope)
-			gc = gspread.authorize(credentials)
-
-
+			update_all_sheets(gc)
 			wks = gc.open_by_url(session["sheetURL"]).sheet1
 			items = wks.col_values(1)
 			prices = wks.col_values(2)
@@ -118,3 +114,29 @@ def urlsent():
 	session['sheetURL'] = request.get_json()['sheetURL']
 	#print session['sheetURL']
 	return redirect(url_for("addStore"))
+	
+def update_all_sheets(gc):
+	stores = Store.query.all()
+	for store in stores:
+		wks = gc.open_by_url(store.url).sheet1
+		items = wks.col_values(1)
+		prices = wks.col_values(2)
+		if len(items) != len(prices):
+			print "Error updating: %s"%(store.name)
+			continue
+		
+		store_items = Item.query.filter_by(storeID=store.id)
+		for item in store_items:
+			db.session.delete(item)
+		
+		result = []
+		for i, j in zip(items, prices):
+			
+			if i.strip() and j.strip():
+				print i, "|", j
+				result.append(Item(name=i.strip(), price=float(j.strip()), owner=store))
+		for item in result:
+			db.session.add(item)
+		db.session.commit()
+
+	
