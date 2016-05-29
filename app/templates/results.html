@@ -42,6 +42,33 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
+        .demo-card-event.mdl-card {
+            width: 256px;
+            height: 256px;
+            background: #3E4EB8;
+        }
+        .demo-card-event > .mdl-card__actions {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        .demo-card-event > .mdl-card__title {
+            align-items: flex-start;
+        }
+        .demo-card-event > .mdl-card__title > h4 {
+            margin-top: 0;
+        }
+        .demo-card-event > .mdl-card__actions {
+            display: flex;
+            box-sizing:border-box;
+            align-items: center;
+        }
+        .demo-card-event > .mdl-card__actions > .material-icons {
+            padding-right: 10px;
+        }
+        .demo-card-event > .mdl-card__title,
+        .demo-card-event > .mdl-card__actions,
+        .demo-card-event > .mdl-card__actions > .mdl-button {
+            color: #fff;
+        }
         #page-top {
             color: gray;
         }
@@ -122,13 +149,13 @@
                     <a href="/addStore.html">Add a store</a>
                 </li>
                 <li>
-                    <a class="page-scroll" href="#about">About</a>
+                    <a class="page-scroll" href="/index.html#about">About</a>
                 </li>
                 <!--<li>-->
                 <!--<a class="page-scroll" href="#download">Download</a>-->
                 <!--</li>-->
                 <li>
-                    <a class="page-scroll" href="#contact">Contact</a>
+                    <a class="page-scroll" href="/index.html#contact">Contact</a>
                 </li>
                 <li>
                     <a><table><tr><td><div id="custom-search-input" style="width:200px;">
@@ -159,12 +186,18 @@
     <!-- /.container -->
 </nav>
 <!-- Title of the Page (search result) -->
-<div class="container text-center searchTitle navbar-header">
-<i class="glyphicon glyphicon-shopping-cart" style="color:#000080"></i>   {{ search }}   <i class="glyphicon glyphicon-shopping-cart" style="color:#000080"></i>
+<div class="container text-center searchTitle" style="margin-bottom: -200px;">
+    <div class="demo-card-event mdl-card mdl-shadow--2dp" style="margin-top: 100px;margin-bottom: -200px;margin:auto;min-height: 50px;width: 1140px;height: 70px;">
+        <div class="mdl-card__title" style="width: 132px;margin: auto;">
+            <h4>
+                {{ search }}
+            </h4>
+        </div>
+    </div>
 </div>
 <!-- Map Section -->
 <section id="mapSec" class="container text-center">
-    <div id="map"></div>
+    <div id="map" style="position:fixed;width:1140px;"></div>
     <script>
     $(document).ready(function() {
         var map;
@@ -250,7 +283,7 @@
                                         marker.setAnimation(null);
                                     } else {
                                         marker.setAnimation(google.maps.Animation.BOUNCE);
-                                        setTimeout(function(){ marker.setAnimation(null); }, 1475);
+                                        setTimeout(function(){ marker.setAnimation(null); }, 1470);
                                     }
                                 }
 
@@ -311,7 +344,6 @@
         }
     });
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1tP3TVYgejPgqe8vw-JmuFkgOyl5b5gc&callback=initMap" async defer></script>
 </section>
 <!--Post each individual result-->
 {% if mapLocs|length == 0 %}
@@ -348,6 +380,8 @@
 
 <!-- Custom Theme JavaScript -->
 <script src="{{ url_for('static', filename='js/grayscale.js') }}"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1tP3TVYgejPgqe8vw-JmuFkgOyl5b5gc&callback=initMap" async defer></script>
 
 </body>
 

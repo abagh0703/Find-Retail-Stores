@@ -27,12 +27,28 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <style>
+        .search-query {
+            width: 674px !important;
+            left: 34px;
+        }
+        ::selection {
+            background: #ACCEF7; /* WebKit/Blink Browsers */
+        }
+        ::-moz-selection {
+            background: #ACCEF7; /* Gecko Browsers */
+        }
+        #searchIcon {
+            z-index: 99 !important;
+        }
+    </style>
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
 
     <!-- Navigation -->
-    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation" style="height:51px;min-height: 51px;">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
@@ -59,34 +75,12 @@
                     <li>
                         <a class="page-scroll" href="#about">About</a>
                     </li>
-                    <!--<li>-->
-                        <!--<a class="page-scroll" href="#download">Download</a>-->
-                    <!--</li>-->
                     <li>
                         <a class="page-scroll" href="#contact">Contact</a>
                     </li>
-                    <li>
-                        <a><table><tr><td><div id="custom-search-input" style="width:200px;">
-                            <div class="col-md-3 input-group" style="width:100%;margin-top:-6px;">
-                                <form action="" method="post" id="searchForm">
-				  {{ form.hidden_tag() }}
-				  {{ form.searchBox(size=25, placeholder="Search for a product", class_="search-query form-control") }}
-                                    <!--input type="text" class="search-query form-control" id="productSearch" name="prdouctSearch" placeholder="Search for a product" />-->
-                                </form>
-                            </div>
-                        </div>
-                        </td>
-                        <td>
-                            <span class="input-group-btn" style="width: 50px;">
-                            <button class="btn btn-danger" form="searchForm" type="submit" style="margin-top:-5px;">
-                                <span class=" glyphicon glyphicon-search"></span>
-                            </button>
-                        </span>
-                        </td>
-                        </tr>
-                        </table>
-                        </a>
-                    </li>
+                    <!--<li>-->
+                        <!--<a class="page-scroll" href="#download">Download</a>-->
+                    <!--</li>-->
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -102,6 +96,26 @@
                     <div class="col-md-8 col-md-offset-2">
                         <h1 class="brand-heading">Retail Trail</h1>
                         <p class="intro-text">Search for products in retail stores near you<br></p>
+                            <a><table><tr><td><div id="custom-search-input" style="width:200px;">
+                                <div class="col-md-3 input-group" style="width:100%;margin-top:-6px;">
+                                    <form action="" method="post" id="searchForm">
+                                        {{ form.hidden_tag() }}
+                                        {{ form.searchBox(size=25, placeholder="Search for a product", class_="search-query form-control") }}
+                                        <!--input type="text" class="search-query form-control" id="productSearch" name="prdouctSearch" placeholder="Search for a product" />-->
+                                    </form>
+                                </div>
+                            </div>
+                            </td>
+                                <td style="padding-left: 470px;">
+                            <span id="searchIcon" class="input-group-btn" style="width: 50px;">
+                            <button class="btn btn-danger" form="searchForm" type="submit" style="margin-top:-6.5px;">
+                                <span class=" glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                                </td>
+                            </tr>
+                            </table>
+                            </a>
                         <a href="#about" class="btn btn-circle page-scroll">
                             <i class="fa fa-angle-double-down animated"></i>
                         </a>
