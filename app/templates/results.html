@@ -61,6 +61,13 @@
             padding-left: 11px;
             padding-bottom: 0px;
         }
+        .searchTitle {
+        	color: #fff;
+        	margin-top:150px;
+        	font-size:300%;
+        	text-align: center;
+        	font-weight: bold;
+        }
 
     </style>
 </head>
@@ -129,9 +136,10 @@
     </div>
     <!-- /.container -->
 </nav>
-
-
-
+<!-- Title of the Page (search result) -->
+<div class="container text-center searchTitle navbar-header">
+<i class="glyphicon glyphicon-shopping-cart" style="color:#000080"></i>   {{ search }}   <i class="glyphicon glyphicon-shopping-cart" style="color:#000080"></i>
+</div>
 <!-- Map Section -->
 <section id="mapSec" class="container text-center">
     <div id="map"></div>

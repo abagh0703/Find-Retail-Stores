@@ -108,7 +108,9 @@ def results(keyword):
 		return redirect('/results/%s' %searchText)
 	return render_template('results.html',
 							form = form,
-							mapLocs = results)
+							mapLocs = results,
+							search = keyword.upper()
+							)
 
 @app.route('/urlsent', methods=['GET','POST'])
 def urlsent():
