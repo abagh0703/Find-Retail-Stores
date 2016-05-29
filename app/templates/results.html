@@ -20,6 +20,9 @@
     <!-- jQuery -->
     <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
     <!-- Custom Material Design Library -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.indigo-red.min.css" />
@@ -39,6 +42,9 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
+        #page-top {
+            color: gray;
+        }
         .demo-card-wide.mdl-card {
             width: 1140px;
             margin: auto;
@@ -51,6 +57,9 @@
         }
         .demo-card-wide > .mdl-card__menu {
             color: #fff;
+        }
+        .storeResult {
+            cursor: pointer;
         }
         .storeName {
             color: #2f3aff;
@@ -184,7 +193,7 @@
 //            storeMarker.setMap(map);
                     //var streetStores = {{ mapLocs }};
                     //for stores that are not geocoded.
-                    // [['CVS', '19 Middle Neck Road, Great Neck, NY 11021'], //TODO: try zipcode
+                    // [['CVS', '19 Middle Neck Road, Great Neck, NY 11021'],
                     //['Walmart', '99 Madis Avenue, New York, NY 10016']];
 
                     //geocode the uncoded stores.
@@ -193,7 +202,7 @@
                     {%
                         for loc in mapLocs %}
                     console.log("hello", "{{ loc[2] }}");
-                    codeAddress([["{{ loc[0] }}", "{{ loc[1] }}"], count]);
+                    codeAddress([["{{ loc[0] }}", "{{ loc[1] }}"], count, "{{ loc[2] }}"]);
                     count += 1;
                     {%
                         endfor
@@ -201,16 +210,28 @@
                     //}
                     function codeAddress(storeInfo) {
                         var address = storeInfo[0][1];
+                        var retailName = storeInfo[0][0];
                         var index = storeInfo[1];
+                        var retailPrice = storeInfo[2];
                         geocoder.geocode({'address': address}, function (results, status) {
                             if (status == google.maps.GeocoderStatus.OK) {
+                                var contentString = '<h4>' + retailName + '</h4>' +
+                                                '<div><p>' + address + ' ' + '</p></div>' +
+                                                '<p>' + '$' + retailPrice + '</p>';
+                                var infowindow = new google.maps.InfoWindow({
+                                    content: contentString
+                                });
                                 var marker = new google.maps.Marker({
                                     map: map,
                                     position: results[0].geometry.location,
                                     animation: google.maps.Animation.DROP,
                                     title: storeInfo[0][0],
                                     icon: '../static/img/blueMarker.png'
-                                }); //TODO: press and box highlights, infowindow opens, different colorm markers and corresponding color text, apps, instant "you are her" infowindow
+                                }); //TODO:  different color markers and corresponding color text, apps
+                                marker.addListener('click', function() {
+                                    infowindow.open(map, marker);
+                                    $('.storeResult').eq(index).effect( "highlight", {color:"#669966"}, 1500 );
+                                });
                                 $('.storeResult').eq(index).click(function(){
                                     toggleBounce();
                                 });
@@ -219,7 +240,7 @@
                                         marker.setAnimation(null);
                                     } else {
                                         marker.setAnimation(google.maps.Animation.BOUNCE);
-                                        setTimeout(function(){ marker.setAnimation(null); }, 1480);
+                                        setTimeout(function(){ marker.setAnimation(null); }, 1475);
                                     }
                                 }
 
