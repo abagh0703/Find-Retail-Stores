@@ -218,26 +218,22 @@
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1tP3TVYgejPgqe8vw-JmuFkgOyl5b5gc&callback=initMap" async defer></script>
 </section>
-
-<div class="demo-card-wide mdl-card mdl-shadow--2dp storeResult" style="min-height:100px;">
-    <span class="storeName">Store Name</span>
-    <span class="mdl-card__supporting-text distance">
-        X miles away
-    </span>
-    <div class="mdl-card__supporting-text storeAddress">
-        Store address
+<!--Post each individual result-->
+{% if mapLocs|length == 0 %}
+		<div class="demo-card-wide mdl-card mdl-shadow--2dp storeResult" style="min-height:100px;">
+    	<span class="storeName">No Stores Available</span>
+    	<span class="mdl-card__supporting-text distance">
+    	    If you sell this product please click on 'ADD A STORE'
+    	</span>
+    	<div class="mdl-card__supporting-text storeAddress">
+        	Hopefully we will support this product shortly
+    	</div>
     </div>
-    <!--<div class="mdl-card__actions mdl-card&#45;&#45;border">-->
-        <!--<a class="mdl-button mdl-button&#45;&#45;colored mdl-js-button mdl-js-ripple-effect">-->
-            <!--Get Started-->
-        <!--</a>-->
-    <!--</div>-->
-    <!--<div class="mdl-card__menu">-->
-        <!--<button class="mdl-button mdl-button&#45;&#45;icon mdl-js-button mdl-js-ripple-effect">-->
-            <!--<i class="material-icons">share</i>-->
-        <!--</button>-->
-    <!--</div>-->
-</div>
+{% else %}
+	{% for loc in mapLocs %}
+		{% include 'store.html' %}
+	{% endfor %}
+{% endif %}
 
 <!-- Footer -->
 <footer>
@@ -248,7 +244,9 @@
 
 <!-- jQuery -->
 <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
-
+<script>
+	
+</script>
 <!-- Bootstrap Core JavaScript -->
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
