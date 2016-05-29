@@ -6,8 +6,8 @@ import gspread
 #import gmInterface
 import json
 import config
-import csv
-from werkzeug.utils import secure_filename
+#import csv
+#from werkzeug.utils import secure_filename
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -29,8 +29,16 @@ def index():
 @app.route('/addStore', methods=['GET','POST'])
 @app.route('/addStore.html', methods=['GET','POST'])
 def addStore():
+	searchForm = SearchForm()
 	form = AddStoreForm()
-	if form.validate_on_submit():
+	if searchForm.validate_on_submit() and searchForm.searchBox.data:
+		#do search stuff here
+		#flash("SEARCHING!!")
+		print "YOLO"
+		searchText = searchForm.searchBox.data
+		return redirect('/results/%s'%searchText)
+	
+	elif form.validate_on_submit():
 		#flash("Thank you, your data has been submitted")
 		print "Thank you, your data has been submitted"
 		
@@ -54,7 +62,7 @@ def addStore():
 			
 			#check all other sheets to see if there are any changes
 			#if there are they are updated
-			update_all_sheets()
+			#update_all_sheets()
 			spreadSheet = gc.open_by_url(session["sheetURL"])
 			wks = spreadSheet.get_worksheet(0)
 			#if form.csvFile.filename != "":
@@ -101,6 +109,7 @@ def addStore():
 		#print "This didn't work"
 	return render_template('addStore.html',
 							form = form,
+							searchForm = searchForm,
 							errorMessage = "")
 	
 @app.route('/results/<keyword>', methods=['GET', 'POST'])
